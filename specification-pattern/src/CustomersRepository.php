@@ -10,27 +10,19 @@ class CustomersRepository
 {
     protected $customers;
 
-    public function __construct(array $customers)
-    {
-        $this->customers = $customers;
-    }
-
     public function bySpecification($specification) {
-        $matches = [];
 
-        foreach ($this->customers as $customer) {
-            if ($specification->isSatisfiedBy($customer)) {
-                $matches[] = $customer;
-            }
-        }
+        $customers = Customer::query();
 
-        return $matches;
+        $customers = $specification->asScope($customers);
+
+        return $customers->get();
 
     }
 
     public function all()
     {
-        return $this->customers;
+        return Customer::all();
     }
 
 }
